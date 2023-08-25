@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { LoginInput } from '@/services/auth/auth.dto';
-import { doLogout, postLogin } from '@/services/auth/auth.service';
+import authService from '@/services/auth/auth.service';
 import { userKeys } from '@/services/user/user.query';
 
 export const useAuth = () => {
@@ -16,7 +16,7 @@ export const useAuth = () => {
     isLoading: loginLoading,
     isError: loginError,
   } = useMutation({
-    mutationFn: (payload: LoginInput) => postLogin(payload),
+    mutationFn: (payload: LoginInput) => authService.login(payload),
     onSuccess: () => {
       refetch();
       navigate('/');
@@ -29,7 +29,7 @@ export const useAuth = () => {
   }
 
   function logout() {
-    doLogout();
+    authService.logout();
     toast.success('Logout successfully');
     refetch();
   }

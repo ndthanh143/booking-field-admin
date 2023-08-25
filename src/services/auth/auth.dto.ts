@@ -12,3 +12,4 @@ export type AuthResponseData = {
 };
 
 export type AuthResponse = BaseResponse<AuthResponseData>;
+export type UserResponse = BaseResponse<User>;

@@ -1,8 +1,10 @@
 import { Venue } from '../venue/venue.dto';
-import { BaseResponse } from '@/common/dtos/base.dto';
+import { BasePaginationResponse, BaseQuery, BaseResponse } from '@/common/dtos/base.dto';
 import { RoleEnum } from '@/common/enums/role.enum';
 
 export type UpdateUserResponse = BaseResponse<User>;
+export type UsersResponse = BasePaginationResponse<User>;
+export type GetAnalystUserResponse = BaseResponse<GetAnalystUserData[]>;
 
 export type User = {
   _id: number;
@@ -35,4 +37,20 @@ export type UpdateUserData = {
   firstName: string;
   lastName: string;
   phone: string;
+  email: string;
+  role: string;
 };
+
+export type GetAnalystUserQuery = {
+  year: number;
+  role?: RoleEnum;
+};
+
+export type GetAnalystUserData = {
+  month: string;
+  total: number;
+};
+
+export type GetAllUsersQuery = {
+  role?: RoleEnum;
+} & BaseQuery;
