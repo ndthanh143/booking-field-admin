@@ -2,24 +2,24 @@ type Options = Partial<{
   signal: AbortSignal;
 }>;
 
-type QueryFnProps<TQueryKeyObj, TOptions> = {
-  queryKeyObj: TQueryKeyObj;
+type QueryFnProps<TQueryKey, TOptions> = {
+  queryKey: TQueryKey;
   options?: TOptions;
 };
 
 export const defineQuery = <
-  TQueryKeyObj,
-  TQueryFunc extends (props: QueryFnProps<TQueryKeyObj, TOptions>) => ReturnType<TQueryFunc>,
+  TQueryKey,
+  TQueryFunc extends (props: QueryFnProps<TQueryKey, TOptions>) => ReturnType<TQueryFunc>,
   TOptions = Options,
 >(
-  queryKeyObj: TQueryKeyObj,
+  queryKey: TQueryKey,
   queryFn: TQueryFunc,
 ) => {
   return {
-    queryKey: [queryKeyObj],
+    queryKey,
     queryFn: (options?: TOptions) =>
       queryFn({
-        queryKeyObj,
+        queryKey,
         options,
       }),
   };

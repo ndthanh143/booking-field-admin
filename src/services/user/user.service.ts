@@ -1,19 +1,45 @@
 import Cookies from 'js-cookie';
 import { AuthResponse } from '../auth/auth.dto';
-import { SignInPayload, UpdateUserData, UpdateUserResponse } from './user.dto';
+import {
+  GetAllUsersQuery,
+  GetAnalystUserQuery,
+  GetAnalystUserResponse,
+  SignInPayload,
+  UpdateUserPayload,
+  UpdateUserResponse,
+  UsersResponse,
+} from './user.dto';
 import axiosInstance from '@/utils/axiosConfig';
 
-export const postRegister = async (payload: SignInPayload) => {
-  const { data } = await axiosInstance.post<AuthResponse>('/auth/register', payload);
+const userService = {
+  getAll: async (query?: GetAllUsersQuery) => {
+    const { data } = await axiosInstance.get<UsersResponse>('/users', {
+      params: {
+        ...query,
+      },
+    });
 
-  Cookies.set('access_token', data.data.accessToken);
-  Cookies.set('user', JSON.stringify(data.data.user));
+    return data;
+  },
+  getAnalyst: async (query: GetAnalystUserQuery) => {
+    const { data } = await axiosInstance.get<GetAnalystUserResponse>('/users/analyst', { params: { ...query } });
+
+    return data.data;
+  },
+  register: async (payload: SignInPayload) => {
+    const { data } = await axiosInstance.post<AuthResponse>('/auth/register', payload);
+
+    Cookies.set('access_token', data.data.accessToken);
+    Cookies.set('user', JSON.stringify(data.data.user));
+  },
+  update: async ({ id, data: payload }: UpdateUserPayload) => {
+    const { data } = await axiosInstance.put<UpdateUserResponse>(`/users/${id}`, payload);
+
+    return data;
+  },
+  delete: async (id: number) => {
+    await axiosInstance.delete(`/users/${id}`);
+  },
 };
 
-export const updateUserInfo = async (id: number, payload: UpdateUserData) => {
-  const { data } = await axiosInstance.put<UpdateUserResponse>(`/users/${id}`, payload);
-
-  Cookies.set('user', JSON.stringify(data.data));
-
-  return data;
-};
+export default userService;
