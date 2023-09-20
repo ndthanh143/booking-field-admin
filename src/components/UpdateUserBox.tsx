@@ -34,7 +34,7 @@ export const UpdateUserBox = ({ isOpen, isLoading, onClose, data, onSubmit }: Up
     setValue('role', data.role);
   }, [data, setValue]);
 
-  const onSubmitHandler = (updateData: UpdateUserData) => onSubmit({ id: data._id, data: updateData });
+  const onSubmitHandler = (updateData: UpdateUserData) => onSubmit({ id: data.id, data: updateData });
 
   return (
     <Modal

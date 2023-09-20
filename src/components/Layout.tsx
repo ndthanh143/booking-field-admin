@@ -15,6 +15,7 @@ import {
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { RoleEnum } from '@/common/enums/role.enum';
 import { useAuth, useBoolean } from '@/hooks';
 
 const drawerWidth = 240;
@@ -72,7 +73,7 @@ export const MainLayout = () => {
 
   const { value, toggle } = useBoolean(true);
 
-  if (!profile) {
+  if (!profile || profile?.role !== RoleEnum.Admin) {
     navigate('/login');
   }
 

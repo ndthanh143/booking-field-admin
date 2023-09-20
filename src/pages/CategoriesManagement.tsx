@@ -22,7 +22,7 @@ export const CategoriesManagement = () => {
   const pitchCategoryInstance = pitchCategoryKeys.list({
     sorts: [
       {
-        field: '_id',
+        field: 'id',
         order: OrderEnum.Desc,
       },
     ],
@@ -54,7 +54,7 @@ export const CategoriesManagement = () => {
         (oldData) =>
           oldData && {
             ...oldData,
-            data: oldData.data.map((item) => (item._id === data.data._id ? data.data : item)),
+            data: oldData.data.map((item) => (item.id === data.data.id ? data.data : item)),
           },
       );
       closeUpdateBox();
@@ -63,87 +63,90 @@ export const CategoriesManagement = () => {
 
   const handleUpdateSubmit = (data: UpdatePitchCategoryPayload) => updateMutation(data);
 
-  const handleDeletePitchCategory = () => selectedPitchCategory && deleteMutation(selectedPitchCategory._id);
+  const handleDeletePitchCategory = () => selectedPitchCategory && deleteMutation(selectedPitchCategory.id);
 
   return (
-    data && (
-      <>
-        <Button variant='contained' onClick={openAddBox}>
-          Add
-        </Button>
-        <Table size='medium' sx={{ marginY: 2 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Thumbnail</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>CreatedAt</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.data.map((pitchCategory) => (
-              <TableRow key={pitchCategory._id}>
-                <TableCell>{pitchCategory._id}</TableCell>
-                <TableCell>{pitchCategory.name}</TableCell>
-                <TableCell>
-                  <Box
-                    component='img'
-                    src={pitchCategory.thumbnail}
-                    width={60}
-                    height={60}
-                    sx={{ objectFit: 'cover' }}
-                  />
-                </TableCell>
-                <TableCell>{pitchCategory.description}</TableCell>
-                <TableCell>{moment(pitchCategory.createdAt).format('MM/DD/YYYY')}</TableCell>
-                <TableCell>
-                  <IconButton
-                    onClick={() => {
-                      setSelectedPitchCategory(pitchCategory);
-                      openUpdateBox();
-                    }}
-                    color='secondary'
-                  >
-                    <Edit />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      openConfirmBox();
-                      setSelectedPitchCategory(pitchCategory);
-                    }}
-                    color='primary'
-                  >
-                    <Delete />
-                  </IconButton>
-                </TableCell>
+    <>
+      <Button variant='contained' onClick={openAddBox}>
+        Add
+      </Button>
+      {data && (
+        <>
+          <Table size='medium' sx={{ marginY: 2 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Thumbnail</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>CreatedAt</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <AddPitchCategoryBox isOpen={isOpenAddBox} onClose={closeAddBox} />
-        {selectedPitchCategory && (
-          <UpdatePitchCategoryBox
-            isLoading={isUpdateLoading}
-            onSubmit={handleUpdateSubmit}
-            isOpen={isOpenUpdateBox}
-            onClose={() => {
-              closeUpdateBox();
-              setSelectedPitchCategory(null);
-            }}
-            data={selectedPitchCategory}
+            </TableHead>
+            <TableBody>
+              {data.data.map((pitchCategory) => (
+                <TableRow key={pitchCategory.id}>
+                  <TableCell>{pitchCategory.id}</TableCell>
+                  <TableCell>{pitchCategory.name}</TableCell>
+                  <TableCell>
+                    <Box
+                      component='img'
+                      src={pitchCategory.thumbnail}
+                      width={60}
+                      height={60}
+                      sx={{ objectFit: 'cover' }}
+                    />
+                  </TableCell>
+                  <TableCell>{pitchCategory.description}</TableCell>
+                  <TableCell>{moment(pitchCategory.createdAt).format('MM/DD/YYYY')}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        setSelectedPitchCategory(pitchCategory);
+                        openUpdateBox();
+                      }}
+                      color='secondary'
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        openConfirmBox();
+                        setSelectedPitchCategory(pitchCategory);
+                      }}
+                      color='primary'
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          {selectedPitchCategory && (
+            <UpdatePitchCategoryBox
+              isLoading={isUpdateLoading}
+              onSubmit={handleUpdateSubmit}
+              isOpen={isOpenUpdateBox}
+              onClose={() => {
+                closeUpdateBox();
+                setSelectedPitchCategory(null);
+              }}
+              data={selectedPitchCategory}
+            />
+          )}
+          <ConfirmBox
+            title='Confirm delete?'
+            subTitle='Data will be delete from your system but you still can restore it'
+            loading={isDeleteLoading}
+            isOpen={isOpenConfirmBox}
+            onClose={closeConfirmBox}
+            onAccept={handleDeletePitchCategory}
           />
-        )}
-        <ConfirmBox
-          title='Confirm delete?'
-          subTitle='Data will be delete from your system but you still can restore it'
-          loading={isDeleteLoading}
-          isOpen={isOpenConfirmBox}
-          onClose={closeConfirmBox}
-          onAccept={handleDeletePitchCategory}
-        />
-      </>
-    )
+        </>
+      )}
+      <AddPitchCategoryBox isOpen={isOpenAddBox} onClose={closeAddBox} />
+    </>
   );
 };

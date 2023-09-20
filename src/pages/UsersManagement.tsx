@@ -45,7 +45,7 @@ export const UsersManagement = () => {
     },
   });
 
-  const handleDeleteUser = () => seletedUser && deleteMutation(seletedUser._id);
+  const handleDeleteUser = () => seletedUser && deleteMutation(seletedUser.id);
 
   const handleUpdate = (data: UpdateUserPayload) => updateMutation(data);
 
@@ -65,8 +65,8 @@ export const UsersManagement = () => {
         </TableHead>
         <TableBody>
           {data.data.map((user) => (
-            <TableRow key={user._id}>
-              <TableCell>{user._id}</TableCell>
+            <TableRow key={user.id}>
+              <TableCell>{user.id}</TableCell>
               <TableCell>{`${user.lastName} ${user.firstName}`}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>

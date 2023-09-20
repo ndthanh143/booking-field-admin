@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
+import { RoleEnum } from '@/common/enums/role.enum';
 import { useAuth } from '@/hooks';
 import { LoginInput } from '@/services/auth/auth.dto';
 
@@ -23,14 +24,14 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const { profile, login } = useAuth();
+  const { profile, login, loginError } = useAuth();
 
   const onSubmitHandler = (payload: LoginInput) => {
     login(payload);
   };
 
   useEffect(() => {
-    if (profile) {
+    if (profile && profile?.role === RoleEnum.Admin) {
       navigate('/');
     }
   }, [profile, navigate]);
@@ -68,6 +69,11 @@ export const Login = () => {
         <Typography variant='body1' paddingY={3}>
           Enter your detail to login to Management
         </Typography>
+        {loginError && (
+          <Typography variant='body1' color='error.main'>
+            Your account does not have sufficient access rights
+          </Typography>
+        )}
         <TextField placeholder='Enter username' required fullWidth sx={{ marginY: 1 }} {...register('username')} />
         {errors.username && (
           <Typography variant='body2' color='error' textAlign='left'>

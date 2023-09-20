@@ -34,7 +34,7 @@ export const UpdatePitchCategoryBox = ({ isOpen, onClose, isLoading, data, onSub
   });
 
   const onSubmitHandler = (updateData: CreatePitchCategoryPayload) => {
-    onSubmit({ id: data._id, data: updateData });
+    onSubmit({ id: data.id, data: updateData });
   };
 
   const {

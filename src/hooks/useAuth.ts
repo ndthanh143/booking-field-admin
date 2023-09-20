@@ -22,6 +22,9 @@ export const useAuth = () => {
       navigate('/');
       toast.success('Login successfully');
     },
+    onError: () => {
+      toast.error('Login with admin role failed');
+    },
   });
 
   async function login(payload: LoginInput) {

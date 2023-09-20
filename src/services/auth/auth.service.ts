@@ -13,7 +13,6 @@ const authService = {
       Cookies.set('user', JSON.stringify(data.data.user));
       return data;
     } else {
-      alert('Tài khoản đăng nhập không đủ quyền truy cập');
       throw new Error('Bạn phải đăng nhập với quyền quản trị viên');
     }
   },
@@ -25,13 +24,7 @@ const authService = {
     const user = Cookies.get('user');
     if (user) {
       const userData: User = JSON.parse(user);
-
-      if (userData.role === RoleEnum.Admin) {
-        return userData;
-      } else {
-        alert('Tài khoản đăng nhập không đủ quyền truy cập');
-        throw new Error('Bạn phải đăng nhập với quyền quản trị viên');
-      }
+      return userData;
     }
     return null;
   },
