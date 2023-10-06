@@ -24,7 +24,6 @@ export const AddPitchCategoryBox = ({ isOpen, onClose }: AddPitchCategoryBoxProp
   const {
     register,
     handleSubmit,
-    getValues,
     control,
     reset,
     formState: { errors },
