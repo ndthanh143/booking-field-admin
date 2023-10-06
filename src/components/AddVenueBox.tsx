@@ -174,7 +174,6 @@ export const AddVenueBox = ({ isOpen, onClose, onSubmit }: AddVenueBoxProps) => 
             <Typography variant='body2' fontStyle='italic'>
               User
             </Typography>
-            {/* <TextField {...register('user')} fullWidth size="small" /> */}
             <Autocomplete
               disablePortal
               id='select-user'
