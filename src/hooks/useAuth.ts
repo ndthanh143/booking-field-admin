@@ -7,7 +7,7 @@ import { LoginInput } from '@/services/auth/auth.dto';
 import authService from '@/services/auth/auth.service';
 import { userKeys } from '@/services/user/user.query';
 
-const NODE_ENV = import.meta.env.NODE_ENV;
+const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 export const useAuth = () => {
   const [accessToken, setAccessToken] = useState<string | undefined>(Cookies.get('access_token'));
 

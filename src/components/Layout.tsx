@@ -127,7 +127,7 @@ export const MainLayout = () => {
         <Divider />
         <List component='nav'>
           {menuItems.map((item) => (
-            <ListItemButton onClick={() => navigate(item.pathname)}>
+            <ListItemButton onClick={() => navigate(item.pathname)} key={item.label}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.label} />
             </ListItemButton>

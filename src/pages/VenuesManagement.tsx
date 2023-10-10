@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 import { OrderEnum } from '@/common/enums/order.enum';
 import { AddVenueBox, ConfirmBox, NoData, UpdateVenueBox } from '@/components';
 import { ViewVenueInfoBox } from '@/components/ViewVenueInfoBox';
-import { useAuth, useBoolean, useDebounce, useMenu } from '@/hooks';
+import { useBoolean, useDebounce, useMenu } from '@/hooks';
 import { CreateVenueDto, Venue, VenueStatusEnum } from '@/services/venue/venue.dto';
 import { venueKeys } from '@/services/venue/venue.query';
 import venueService from '@/services/venue/venue.service';
@@ -41,10 +41,9 @@ export const VenuesManagement = () => {
 
   const { anchorEl, onOpen, onClose, isOpen } = useMenu();
 
-  const { socket } = useAuth();
-
   const [currentField, setCurrentField] = useState<string | null>(null);
   const [order, setOrder] = useState<OrderEnum>(OrderEnum.Desc);
+
   const searchDebounce = useDebounce(keyword, 1000);
   const venueInstance = venueKeys.list({
     keyword: searchDebounce,
@@ -73,14 +72,9 @@ export const VenuesManagement = () => {
 
   const { mutate: mutateUpdateVenue } = useMutation({
     mutationFn: venueService.update,
-    onSuccess: (data) => {
+    onSuccess: () => {
       refetchVenue();
       closeUpdateBox();
-      if (data.data.status !== selectedVenue?.status) {
-        socket?.emit('update_venue_status', data.data);
-      } else {
-        socket?.emit('update_venue', data);
-      }
       toast.success('Update venue successfully');
     },
   });
@@ -123,7 +117,7 @@ export const VenuesManagement = () => {
 
   useEffect(() => {
     refetchVenue();
-  }, [page, order, currentField, refetchVenue]);
+  }, [page, order, currentField, selectedStatusFilter, refetchVenue]);
 
   return (
     <>
